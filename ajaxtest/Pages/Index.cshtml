@@ -1,0 +1,71 @@
+﻿
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    
+    <!-- Place this where you need payment button -->
+    <button id="payment-button">Pay with Khalti</button>
+    <!-- Place this where you need payment button -->
+</div>
+
+<script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+
+<script>
+    
+        /*-------------------Khalti Client Side -------------------*/
+
+    var config = {
+            // replace the publicKey with yours
+            "publicKey": "test_public_key_95d1799a105c4632916697f0ccc7f93b",
+            "productIdentity": "1234567890",
+            "productName": "Dragon",
+            "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
+            "paymentPreference": [
+                "KHALTI",
+                "EBANKING",
+                "MOBILE_BANKING",
+                "CONNECT_IPS",
+                "SCT",
+            ],
+            "eventHandler": {
+                onSuccess(payload) {
+                    // hit merchant api for initiating verfication
+                    console.log(payload);
+
+                    //Ajax call providing token
+                    $.ajax({
+                        data: { token: payload.token },
+                        url: 'Index?handler=Token',
+                        type: "GET",
+                        success: function (data) {
+                            console.log(data);
+                            alert("Paymet process:"+data.isSuccessStatusCode);
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    })
+                },
+                onError(error) {
+                    console.log(error);
+                },
+                onClose() {
+                    console.log('widget is closing');
+                }
+            }
+        };
+
+        var checkout = new KhaltiCheckout(config);
+        var btn = document.getElementById("payment-button");
+        btn.onclick = function () {
+            // minimum transaction amount must be 10, i.e 1000 in paisa.
+            checkout.show({ amount: 1000 });
+        }
+    /*-------------------Khalti-------------------*/
+</script>
