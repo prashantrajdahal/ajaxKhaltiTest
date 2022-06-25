@@ -19,6 +19,9 @@ namespace ajaxtest.Models
         public Boolean ISRedeemed { get; set; } = false;
         public int TicketAmount { get; set; }
 
-
+        public static implicit operator Customer(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

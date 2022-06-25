@@ -8,11 +8,17 @@ namespace ajaxtest.Models
 {
     public class DatabaseContext: DbContext
     {
+        
+        public DatabaseContext()
+        {
+            
+        }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
- 
+            
         }
         public DbSet<Customer> Customers { get; set; }
-        public object Customer { get; internal set; }
+        public object Customer { get;  set; }
     }
 }
